@@ -146,8 +146,8 @@ public class ExamService {
                 examAnswerRepository.save(answer);
 
                 return ExamAnswerResponse.builder()
-                                .questionId(request.getQuestionId())
-                                .selectedOptionId(request.getSelectedOptionId())
+                                .questionId(request.getQuestionId().toString())
+                                .selectedOptionId(request.getSelectedOptionId() != null ? request.getSelectedOptionId().toString() : null)
                                 .isCorrect(null) // not graded yet
                                 .build();
         }

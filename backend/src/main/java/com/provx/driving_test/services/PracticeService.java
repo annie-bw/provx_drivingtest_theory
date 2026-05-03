@@ -204,7 +204,7 @@ public class PracticeService {
     public List<PracticeSessionResponse> getHistory(Long userId) {
         return practiceSessionRepository.findByUserIdOrderByStartedAtDesc(userId).stream()
                 .map(s -> PracticeSessionResponse.builder()
-                        .id(s.getId())
+                        .id(s.getId().toString())
                         .status(s.getStatus())
                         .totalQuestions(s.getTotalQuestions())
                         .correctCount(s.getCorrectCount())

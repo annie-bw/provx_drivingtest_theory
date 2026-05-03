@@ -114,7 +114,7 @@ public class AdminService {
                                                 List.of(ExamStatus.SUBMITTED, ExamStatus.TIMED_OUT))
                                 .stream()
                                 .map(e -> ExamResponse.builder()
-                                                .id(e.getId())
+                                                .id(e.getId().toString())
                                                 .status(e.getStatus())
                                                 .totalQuestions(e.getTotalQuestions())
                                                 .correctCount(e.getCorrectCount())
