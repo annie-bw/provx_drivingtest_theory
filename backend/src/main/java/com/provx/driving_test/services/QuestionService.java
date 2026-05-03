@@ -23,8 +23,15 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
     private final QuestionOptionRepository questionOptionRepository;
 
-    @Value("${app.image-base-url:http://localhost:8081/images/signs/}")
+    @Value("${app.image-base-url:/images/signs/}")
     private String imageBaseUrl;
+
+    private String normalizeImageBaseUrl() {
+        if (imageBaseUrl == null || imageBaseUrl.isBlank()) {
+            return "/images/signs/";
+        }
+        return imageBaseUrl.endsWith("/") ? imageBaseUrl : imageBaseUrl + "/";
+    }
 
     // -------------------------------------------------------
     // Draw 20 random questions for a new session
@@ -60,9 +67,7 @@ public class QuestionService {
                 .questionNumber(question.getQuestionNumber())
                 .textRw(question.getTextRw())
                 .isImageBased(question.getIsImageBased())
-                .imageUrl(question.getImageFilename() != null
-                        ? imageBaseUrl + question.getImageFilename()
-                        : null)
+                .imageUrl(buildImageUrl(question.getImageFilename()))
                 .options(options)
                 .position(position)
                 .build();
@@ -188,6 +193,6 @@ public class QuestionService {
     // Helper method to build full image URLs
     // -------------------------------------------------------
     public String buildImageUrl(String filename) {
-        return filename != null ? imageBaseUrl + filename : null;
+        return filename != null ? normalizeImageBaseUrl() + filename : null;
     }
 }

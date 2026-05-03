@@ -168,6 +168,7 @@ public class PracticeService {
     // GET session with current state
     // Used if student refreshes mid-practice
     // -------------------------------------------------------
+    @Transactional(readOnly = true)
     public PracticeSessionResponse getSession(Long sessionId, Long userId) {
         PracticeSession session = practiceSessionRepository.findById(sessionId)
                 .orElseThrow(() -> ApiException.notFound("Practice session", sessionId));
@@ -199,6 +200,7 @@ public class PracticeService {
     // -------------------------------------------------------
     // GET student's practice history
     // -------------------------------------------------------
+    @Transactional(readOnly = true)
     public List<PracticeSessionResponse> getHistory(Long userId) {
         return practiceSessionRepository.findByUserIdOrderByStartedAtDesc(userId).stream()
                 .map(s -> PracticeSessionResponse.builder()

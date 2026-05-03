@@ -9,12 +9,23 @@ const API_BASE_URL =
 
 const BACKEND_BASE_URL =
   import.meta.env.VITE_BACKEND_URL ?? "http://localhost:8081";
+const IMAGE_HOST = import.meta.env.VITE_IMAGE_HOST ?? "";
+
+const buildAssetUrl = (baseUrl: string, relativePath: string) => {
+  const normalizedBase = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+  const normalizedPath = relativePath.startsWith("/") ? relativePath : `/${relativePath}`;
+  return `${normalizedBase}${normalizedPath}`;
+};
 
 export function getImageUrl(relativePath: string): string {
-  if (relativePath.startsWith('http')) {
+  if (!relativePath) return relativePath;
+  if (relativePath.startsWith("http")) {
     return relativePath;
   }
-  return `${BACKEND_BASE_URL}${relativePath}`;
+  if (IMAGE_HOST) {
+    return buildAssetUrl(IMAGE_HOST, relativePath);
+  }
+  return buildAssetUrl(BACKEND_BASE_URL, relativePath);
 }
 
 export async function apiRequest<T>(
