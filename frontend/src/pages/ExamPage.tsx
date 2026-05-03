@@ -75,6 +75,22 @@ export default function ExamPage() {
             return;
           }
 
+          const expiresAt = currentExam.expiresAt
+            ? new Date(currentExam.expiresAt).getTime()
+            : 0;
+          const remainingSeconds = expiresAt > 0
+            ? Math.max(0, Math.floor((expiresAt - Date.now()) / 1000))
+            : 0;
+
+          if (remainingSeconds <= 5) {
+            // Avoid restoring an exam that is already ending immediately
+            sessionStorage.removeItem(SESSION_ID_KEY);
+            sessionStorage.removeItem(SESSION_INDEX_KEY);
+            sessionStorage.removeItem(SESSION_ANSWERS_KEY);
+            currentExam = await startExam(token);
+            sessionStorage.setItem(SESSION_ID_KEY, currentExam.id.toString());
+          }
+
           // Preload all images before showing the exam
           await preloadQuestionImages(currentExam.questions);
 
