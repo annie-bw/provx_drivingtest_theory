@@ -25,7 +25,7 @@ export default function ExamPage() {
   const { token } = useAuth();
   const [exam, setExam] = useState<ExamResponse | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [answers, setAnswers] = useState<Record<string, string>>({});
   const [timeLeft, setTimeLeft] = useState(20 * 60);
   const [showSubmit, setShowSubmit] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -50,12 +50,12 @@ export default function ExamPage() {
         );
         const savedAnswers = JSON.parse(
           sessionStorage.getItem(SESSION_ANSWERS_KEY) ?? "{}",
-        ) as Record<string, number>;
+        ) as Record<string, string>;
 
         let currentExam: ExamResponse | null = null;
 
         if (savedExamId) {
-          currentExam = await getExam(Number(savedExamId), token);
+          currentExam = await getExam(savedExamId, token);
         } else if (!isStarting) {
           setIsStarting(true);
           currentExam = await startExam(token);
@@ -149,7 +149,7 @@ export default function ExamPage() {
     return `${mins}:${secs}`;
   };
 
-  const handleSelect = async (optionId: number) => {
+  const handleSelect = async (optionId: string) => {
     if (!exam || !question || !token) return;
     const examToken = token;
     setAnswers((prev) => ({ ...prev, [question.id]: optionId }));
