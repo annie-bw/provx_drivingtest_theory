@@ -3,8 +3,6 @@
 -- Spring Boot + PostgreSQL
 -- ============================================================
 
--- EXTENSIONS
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Set default encoding to UTF-8
 SET client_encoding = 'UTF8';
