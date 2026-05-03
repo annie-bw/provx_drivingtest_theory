@@ -27,7 +27,7 @@ export interface ExamRecord {
 }
 
 export interface UserProfile {
-  id: number;
+  id: string;
   name: string;
   email: string;
   role: UserRole;
@@ -37,14 +37,14 @@ export interface UserProfile {
 }
 
 export interface ApiOption {
-  id: number;
+  id: string;
   optionLetter: string;
   textRw: string;
   isCorrect?: boolean | null;
 }
 
 export interface ApiQuestion {
-  id: number;
+  id: string;
   questionNumber: number;
   textRw: string;
   isImageBased: boolean;
@@ -54,11 +54,11 @@ export interface ApiQuestion {
 }
 
 export interface ExamAnswerResponse {
-  questionId: number;
+  questionId: string;
   position: number;
-  selectedOptionId: number | null;
+  selectedOptionId: string | null;
   isCorrect?: boolean | null;
-  correctOptionId?: number;
+  correctOptionId?: string;
   correctOptionText?: string;
   questionTextRw?: string;
   imageUrl?: string;
@@ -66,7 +66,7 @@ export interface ExamAnswerResponse {
 }
 
 export interface ExamResponse {
-  id: number;
+  id: string;
   status: string;
   totalQuestions: number;
   correctCount?: number;
@@ -94,15 +94,15 @@ export interface PracticeSessionResponse {
 }
 
 export interface PracticeAnswerResponse {
-  questionId: number;
-  selectedOptionId: number | null;
+  questionId: string;
+  selectedOptionId: string | null;
   isCorrect: boolean;
-  correctOptionId: number;
+  correctOptionId: string;
   correctOptionText: string;
 }
 
 export interface AdminExam {
-  id: number;
+  id: string;
   status: string;
   totalQuestions: number;
   correctCount?: number;

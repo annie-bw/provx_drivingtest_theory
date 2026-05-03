@@ -5,7 +5,7 @@ export type BackendRole = "STUDENT" | "ADMIN";
 export interface AuthData {
   token: string;
   tokenType: string;
-  userId: number;
+  userId: string;
   firstName: string;
   lastName: string;
   email: string;

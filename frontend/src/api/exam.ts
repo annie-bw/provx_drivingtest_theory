@@ -2,8 +2,8 @@ import { apiRequest } from "./client";
 import type { ExamResponse, ExamAnswerResponse, DashboardResponse } from "../types";
 
 export interface AnswerRequest {
-  questionId: number;
-  selectedOptionId: number | null;
+  questionId: string;
+  selectedOptionId: string | null;
 }
 
 export async function startExam(token: string): Promise<ExamResponse> {
@@ -17,7 +17,7 @@ export async function startExam(token: string): Promise<ExamResponse> {
 }
 
 export async function getExam(
-  examId: number,
+  examId: string,
   token: string,
 ): Promise<ExamResponse> {
   return apiRequest<ExamResponse>(
@@ -30,7 +30,7 @@ export async function getExam(
 }
 
 export async function saveExamAnswer(
-  examId: number,
+  examId: string,
   request: AnswerRequest,
   token: string,
 ): Promise<ExamAnswerResponse> {
@@ -45,7 +45,7 @@ export async function saveExamAnswer(
 }
 
 export async function submitExam(
-  examId: number,
+  examId: string,
   token: string,
 ): Promise<ExamResponse> {
   return apiRequest<ExamResponse>(
@@ -58,7 +58,7 @@ export async function submitExam(
 }
 
 export async function reviewExam(
-  examId: number,
+  examId: string,
   token: string,
 ): Promise<ExamResponse> {
   return apiRequest<ExamResponse>(

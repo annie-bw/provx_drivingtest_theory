@@ -2,8 +2,8 @@ import { apiRequest } from "./client";
 import type { PracticeSessionResponse, PracticeAnswerResponse } from "../types";
 
 export interface AnswerRequest {
-  questionId: number;
-  selectedOptionId: number | null;
+  questionId: string;
+  selectedOptionId: string | null;
 }
 
 export async function startPractice(
@@ -19,7 +19,7 @@ export async function startPractice(
 }
 
 export async function getPracticeSession(
-  sessionId: number,
+  sessionId: string,
   token: string,
 ): Promise<PracticeSessionResponse> {
   return apiRequest<PracticeSessionResponse>(
@@ -32,7 +32,7 @@ export async function getPracticeSession(
 }
 
 export async function submitPracticeAnswer(
-  sessionId: number,
+  sessionId: string,
   request: AnswerRequest,
   token: string,
 ): Promise<PracticeAnswerResponse> {

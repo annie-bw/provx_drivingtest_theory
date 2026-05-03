@@ -212,7 +212,7 @@ export const questions: Question[] = [
 
 export const mockUsers: UserProfile[] = [
   {
-    id: 1,
+    id: "1",
     name: "Jean Baptiste",
     email: "jean@example.com",
     role: "student",
@@ -230,7 +230,7 @@ export const mockUsers: UserProfile[] = [
     ],
   },
   {
-    id: 2,
+    id: "2",
     name: "Marie Claire",
     email: "marie@example.com",
     role: "student",
@@ -248,7 +248,7 @@ export const mockUsers: UserProfile[] = [
     ],
   },
   {
-    id: 3,
+    id: "3",
     name: "Pierre Paul",
     email: "pierre@example.com",
     role: "student",
