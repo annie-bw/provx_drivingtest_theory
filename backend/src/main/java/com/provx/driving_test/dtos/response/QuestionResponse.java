@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class QuestionResponse {
 
-    private Long id;
+    private String id;
     private Integer questionNumber;
     private String textRw;
     private Boolean isImageBased;

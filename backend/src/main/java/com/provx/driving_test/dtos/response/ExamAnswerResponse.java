@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ExamAnswerResponse {
 
-    private Long questionId;
+    private String questionId;
     private Integer position;          // 1-20, for the navigator grid
-    private Long selectedOptionId;     // null if unanswered
+    private String selectedOptionId;     // null if unanswered
     private Boolean isCorrect;         // null until exam submitted
 
     // Only populated in review response — not during active exam
-    private Long correctOptionId;
+    private String correctOptionId;
     private String correctOptionText;
     private String questionTextRw;
     private String imageUrl;

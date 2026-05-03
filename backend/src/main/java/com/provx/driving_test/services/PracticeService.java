@@ -79,7 +79,7 @@ public class PracticeService {
         }
 
         return PracticeSessionResponse.builder()
-                .id(session.getId())
+                .id(session.getId().toString())
                 .status(session.getStatus())
                 .totalQuestions(20)
                 .correctCount(0)
@@ -156,10 +156,10 @@ public class PracticeService {
 
         // Return instant feedback
         return PracticeAnswerResponse.builder()
-                .questionId(request.getQuestionId())
-                .selectedOptionId(request.getSelectedOptionId())
+                .questionId(request.getQuestionId().toString())
+                .selectedOptionId(request.getSelectedOptionId() != null ? request.getSelectedOptionId().toString() : null)
                 .isCorrect(isCorrect)
-                .correctOptionId(correctOption.getId())
+                .correctOptionId(correctOption.getId().toString())
                 .correctOptionText(correctOption.getTextRw())
                 .build();
     }
@@ -186,7 +186,7 @@ public class PracticeService {
                 .collect(Collectors.toList());
 
         return PracticeSessionResponse.builder()
-                .id(session.getId())
+                .id(session.getId().toString())
                 .status(session.getStatus())
                 .totalQuestions(session.getTotalQuestions())
                 .correctCount(session.getCorrectCount())

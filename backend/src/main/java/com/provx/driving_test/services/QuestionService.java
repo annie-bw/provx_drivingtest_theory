@@ -54,7 +54,7 @@ public class QuestionService {
     public QuestionResponse toResponse(Question question, int position, boolean includeCorrect) {
         List<OptionResponse> options = question.getOptions().stream()
                 .map(opt -> OptionResponse.builder()
-                        .id(opt.getId())
+                        .id(opt.getId().toString())
                         .optionLetter(opt.getOptionLetter())
                         .textRw(opt.getTextRw())
                         // Only expose isCorrect when explicitly requested
@@ -63,7 +63,7 @@ public class QuestionService {
                 .collect(Collectors.toList());
 
         return QuestionResponse.builder()
-                .id(question.getId())
+                .id(question.getId().toString())
                 .questionNumber(question.getQuestionNumber())
                 .textRw(question.getTextRw())
                 .isImageBased(question.getIsImageBased())

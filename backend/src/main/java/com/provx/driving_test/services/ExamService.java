@@ -192,9 +192,9 @@ public class ExamService {
                 // Get current answer state (for navigator grid)
                 List<ExamAnswerResponse> answers = examAnswerRepository.findByExamId(examId).stream()
                                 .map(a -> ExamAnswerResponse.builder()
-                                                .questionId(a.getQuestion().getId())
+                                                .questionId(a.getQuestion().getId().toString())
                                                 .selectedOptionId(a.getSelectedOption() != null
-                                                                ? a.getSelectedOption().getId()
+                                                                ? a.getSelectedOption().getId().toString()
                                                                 : null)
                                                 .isCorrect(null) // hidden until submitted
                                                 .build())
@@ -232,7 +232,7 @@ public class ExamService {
                                 .map(a -> {
                                         List<OptionResponse> options = a.getQuestion().getOptions().stream()
                                                         .map(opt -> OptionResponse.builder()
-                                                                        .id(opt.getId())
+                                                                        .id(opt.getId().toString())
                                                                         .optionLetter(opt.getOptionLetter())
                                                                         .textRw(opt.getTextRw())
                                                                         .isCorrect(opt.getIsCorrect()) // revealed in
@@ -241,13 +241,13 @@ public class ExamService {
                                                         .collect(Collectors.toList());
 
                                         return ExamAnswerResponse.builder()
-                                                        .questionId(a.getQuestion().getId())
+                                                        .questionId(a.getQuestion().getId().toString())
                                                         .position(questionPositions.get(a.getQuestion().getId()))
                                                         .selectedOptionId(a.getSelectedOption() != null
-                                                                        ? a.getSelectedOption().getId()
+                                                                        ? a.getSelectedOption().getId().toString()
                                                                         : null)
                                                         .isCorrect(a.getIsCorrect())
-                                                        .correctOptionId(a.getCorrectOption().getId())
+                                                        .correctOptionId(a.getCorrectOption().getId().toString())
                                                         .correctOptionText(a.getCorrectOption().getTextRw())
                                                         .questionTextRw(a.getQuestion().getTextRw())
                                                         .imageUrl(questionService.buildImageUrl(
@@ -332,7 +332,7 @@ public class ExamService {
                         List<ExamAnswerResponse> answers,
                         List<ExamAnswerResponse> review) {
                 return ExamResponse.builder()
-                                .id(exam.getId())
+                                .id(exam.getId().toString())
                                 .status(exam.getStatus())
                                 .totalQuestions(exam.getTotalQuestions())
                                 .correctCount(exam.getCorrectCount())

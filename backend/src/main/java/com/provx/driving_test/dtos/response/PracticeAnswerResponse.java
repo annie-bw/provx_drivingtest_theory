@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PracticeAnswerResponse {
 
-    private Long questionId;
-    private Long selectedOptionId;
+    private String questionId;
+    private String selectedOptionId;
 
     // Instant feedback — these are returned immediately after student answers
     private Boolean isCorrect;
-    private Long correctOptionId;
+    private String correctOptionId;
     private String correctOptionText;  // shown in red feedback bar on frontend
 }

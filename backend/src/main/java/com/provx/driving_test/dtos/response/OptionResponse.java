@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OptionResponse {
 
-    private Long id;
+    private String id;
     private String optionLetter;  // "a", "b", "c", "d"
     private String textRw;
 

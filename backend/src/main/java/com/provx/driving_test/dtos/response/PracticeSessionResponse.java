@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PracticeSessionResponse {
 
-    private Long id;
+    private String id;
     private SessionStatus status;
     private Integer totalQuestions;
     private Integer correctCount;

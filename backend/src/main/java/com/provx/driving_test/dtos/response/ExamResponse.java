@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ExamResponse {
 
-    private Long id;
+    private String id;
     private ExamStatus status;
     private Integer totalQuestions;
     private Integer correctCount;        // null until submitted
