@@ -61,10 +61,7 @@ export default function PracticePage() {
 
         if (savedSessionId) {
           try {
-            practiceSession = await getPracticeSession(
-              savedSessionId,
-              token,
-            );
+            practiceSession = await getPracticeSession(savedSessionId, token);
           } catch (err) {
             // If session doesn't exist, remove the stale ID and start a new one
             console.info(

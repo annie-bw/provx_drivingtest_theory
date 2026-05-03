@@ -1,5 +1,9 @@
 import { apiRequest } from "./client";
-import type { ExamResponse, ExamAnswerResponse, DashboardResponse } from "../types";
+import type {
+  ExamResponse,
+  ExamAnswerResponse,
+  DashboardResponse,
+} from "../types";
 
 export interface AnswerRequest {
   questionId: string;

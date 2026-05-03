@@ -19,14 +19,14 @@ public class ExamResponse {
     private String id;
     private ExamStatus status;
     private Integer totalQuestions;
-    private Integer correctCount;        // null until submitted
-    private BigDecimal scorePercent;     // null until submitted
-    private Boolean passed;              // null until submitted
+    private Integer correctCount; // null until submitted
+    private BigDecimal scorePercent; // null until submitted
+    private Boolean passed; // null until submitted
     private BigDecimal passThreshold;
     private Integer durationSeconds;
     private LocalDateTime startedAt;
     private LocalDateTime submittedAt;
-    private LocalDateTime expiresAt;     // frontend uses this to drive the countdown timer
+    private LocalDateTime expiresAt; // frontend uses this to drive the countdown timer
 
     // The 20 questions — included when exam is first created
     // isCorrect on options is NEVER sent during active exam

@@ -147,7 +147,9 @@ public class ExamService {
 
                 return ExamAnswerResponse.builder()
                                 .questionId(request.getQuestionId().toString())
-                                .selectedOptionId(request.getSelectedOptionId() != null ? request.getSelectedOptionId().toString() : null)
+                                .selectedOptionId(request.getSelectedOptionId() != null
+                                                ? request.getSelectedOptionId().toString()
+                                                : null)
                                 .isCorrect(null) // not graded yet
                                 .build();
         }

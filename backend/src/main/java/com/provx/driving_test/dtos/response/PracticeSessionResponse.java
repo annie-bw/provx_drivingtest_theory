@@ -25,6 +25,7 @@ public class PracticeSessionResponse {
     private LocalDateTime completedAt;
 
     // The 20 questions for this session — included when session is first created
-    // Options do NOT include isCorrect during practice (added per-answer via PracticeAnswerResponse)
+    // Options do NOT include isCorrect during practice (added per-answer via
+    // PracticeAnswerResponse)
     private List<QuestionResponse> questions;
 }

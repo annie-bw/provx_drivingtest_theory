@@ -17,5 +17,5 @@ public class PracticeAnswerResponse {
     // Instant feedback — these are returned immediately after student answers
     private Boolean isCorrect;
     private String correctOptionId;
-    private String correctOptionText;  // shown in red feedback bar on frontend
+    private String correctOptionText; // shown in red feedback bar on frontend
 }

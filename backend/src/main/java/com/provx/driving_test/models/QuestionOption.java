@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "question_options",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"question_id", "option_letter"}))
+@Table(name = "question_options", uniqueConstraints = @UniqueConstraint(columnNames = { "question_id",
+        "option_letter" }))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,7 +22,7 @@ public class QuestionOption {
     private Question question;
 
     @Column(name = "option_letter", nullable = false, length = 1, columnDefinition = "CHAR(1)")
-    private String optionLetter;  // "a", "b", "c", "d"
+    private String optionLetter; // "a", "b", "c", "d"
 
     @Column(name = "text_rw", nullable = false, columnDefinition = "TEXT")
     private String textRw;

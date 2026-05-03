@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 public class ExamAnswerResponse {
 
     private String questionId;
-    private Integer position;          // 1-20, for the navigator grid
-    private String selectedOptionId;     // null if unanswered
-    private Boolean isCorrect;         // null until exam submitted
+    private Integer position; // 1-20, for the navigator grid
+    private String selectedOptionId; // null if unanswered
+    private Boolean isCorrect; // null until exam submitted
 
     // Only populated in review response — not during active exam
     private String correctOptionId;

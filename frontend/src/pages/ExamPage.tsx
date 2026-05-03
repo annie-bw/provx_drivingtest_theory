@@ -78,9 +78,10 @@ export default function ExamPage() {
           const expiresAt = currentExam.expiresAt
             ? new Date(currentExam.expiresAt).getTime()
             : 0;
-          const remainingSeconds = expiresAt > 0
-            ? Math.max(0, Math.floor((expiresAt - Date.now()) / 1000))
-            : 0;
+          const remainingSeconds =
+            expiresAt > 0
+              ? Math.max(0, Math.floor((expiresAt - Date.now()) / 1000))
+              : 0;
 
           if (remainingSeconds <= 5) {
             // Avoid restoring an exam that is already ending immediately

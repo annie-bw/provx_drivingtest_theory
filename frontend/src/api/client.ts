@@ -13,7 +13,9 @@ const IMAGE_HOST = import.meta.env.VITE_IMAGE_HOST ?? "";
 
 const buildAssetUrl = (baseUrl: string, relativePath: string) => {
   const normalizedBase = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
-  const normalizedPath = relativePath.startsWith("/") ? relativePath : `/${relativePath}`;
+  const normalizedPath = relativePath.startsWith("/")
+    ? relativePath
+    : `/${relativePath}`;
   return `${normalizedBase}${normalizedPath}`;
 };
 
