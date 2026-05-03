@@ -82,17 +82,11 @@ public class SecurityConfig {
     private CorsConfiguration buildCorsConfiguration() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // React dev server — change to your deployed frontend URL in production
-        config.setAllowedOrigins(List.of(
-                "http://localhost:5173",
-                "http://localhost:3000",
-                "http://localhost:4174",
-                "http://localhost:4175",
-                "http://localhost:4176",
-                "http://localhost:4177",
-                "http://localhost:4178",
-                "http://localhost:4179",
-                "http://localhost:4187"));
+        // Allow local dev and Koyeb-hosted frontends
+        config.setAllowedOriginPatterns(List.of(
+                "http://localhost:*",
+                "http://127.0.0.1:*",
+                "https://*.koyeb.app"));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With"));

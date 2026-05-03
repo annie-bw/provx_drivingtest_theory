@@ -11,9 +11,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-                .allowedOrigins("http://localhost:4173", "http://localhost:4174", "http://localhost:4175",
-                        "http://localhost:4176", "http://localhost:4177", "http://localhost:4178",
-                        "http://localhost:4179", "http://localhost:4180", "http://localhost:4187")
+                .allowedOriginPatterns("http://localhost:*", "http://127.0.0.1:*", "https://*.koyeb.app")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
