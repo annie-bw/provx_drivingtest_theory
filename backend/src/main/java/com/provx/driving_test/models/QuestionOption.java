@@ -21,7 +21,7 @@ public class QuestionOption {
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
-    @Column(name = "option_letter", nullable = false, length = 1)
+    @Column(name = "option_letter", nullable = false, length = 1, columnDefinition = "CHAR(1)")
     private String optionLetter;  // "a", "b", "c", "d"
 
     @Column(name = "text_rw", nullable = false, columnDefinition = "TEXT")
