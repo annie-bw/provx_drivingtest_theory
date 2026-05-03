@@ -54,6 +54,8 @@ public class SecurityConfig {
 
                         // ── Public endpoints ────────────────────────────────────────
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/health").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
 
                         // Static images (traffic signs) served from resources/static
@@ -82,10 +84,11 @@ public class SecurityConfig {
     private CorsConfiguration buildCorsConfiguration() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // Allow local dev and Koyeb-hosted frontends
+        // Allow local dev, Render, and Koyeb-hosted frontends
         config.setAllowedOriginPatterns(List.of(
                 "http://localhost:*",
                 "http://127.0.0.1:*",
+                "https://*.onrender.com",
                 "https://*.koyeb.app"));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
