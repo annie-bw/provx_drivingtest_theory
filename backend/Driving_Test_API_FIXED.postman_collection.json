@@ -1,0 +1,404 @@
+{
+  "info": {
+    "name": "Driving Test API - FIXED",
+    "description": "Fixed version with dynamic question IDs, admin user, and proper error handling",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "SETUP - Create Admin User",
+      "item": [
+        {
+          "name": "Create Admin User (Manual SQL)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "-- Run this in your database to create admin user:\n-- Email: admin@example.com\n-- Password: AdminPass123\n\nINSERT INTO users (first_name, last_name, email, password_hash, role, is_active, created_at, updated_at) \nVALUES (\n  'Admin', \n  'User', \n  'admin@example.com', \n  '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', \n  'ADMIN', \n  true, \n  NOW(), \n  NOW()\n);"
+            },
+            "url": {
+              "raw": "localhost:8080",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080"
+            },
+            "description": "Run this SQL in your database to create an admin user. Password is 'AdminPass123' (bcrypt hashed)."
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"AdminPass123\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Login as admin. Save the token to {{admin_token}} environment variable."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "STUDENT WORKFLOW - FIXED",
+      "item": [
+        {
+          "name": "1. Register Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"SecurePass123\"\n}"
+            },
+            "url": {
+              "raw": "{{host}}/api/auth/register",
+              "protocol": "http",
+              "host": ["{{host}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "description": "Register a new student account. Copy the token from response and set {{student_token}}."
+          },
+          "response": []
+        },
+        {
+          "name": "2. Start Practice Session",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{student_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{host}}/api/practice/start",
+              "protocol": "http",
+              "host": ["{{host}}"],
+              "path": ["api", "practice", "start"]
+            },
+            "description": "Start practice session. Copy session_id from response and set {{session_id}}."
+          },
+          "response": []
+        },
+        {
+          "name": "3. Answer Practice Question (Dynamic)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{student_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"questionId\": {{question_1_id}},\n  \"selectedOptionId\": {{question_1_option_1_id}}\n}"
+            },
+            "url": {
+              "raw": "{{host}}/api/practice/{{session_id}}/answer",
+              "protocol": "http",
+              "host": ["{{host}}"],
+              "path": ["api", "practice", "{{session_id}}", "answer"]
+            },
+            "description": "Answer first question from practice session. Uses dynamic question ID from previous response."
+          },
+          "response": []
+        },
+        {
+          "name": "4. Start Exam",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{student_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{host}}/api/exams/start",
+              "protocol": "http",
+              "host": ["{{host}}"],
+              "path": ["api", "exams", "start"]
+            },
+            "description": "Start exam. Copy exam_id from response and set {{exam_id}}. Also note the question IDs for answering."
+          },
+          "response": []
+        },
+        {
+          "name": "5. Answer Exam Question 1 (Dynamic)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{student_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"questionId\": {{exam_question_1_id}},\n  \"selectedOptionId\": {{exam_question_1_correct_option_id}}\n}"
+            },
+            "url": {
+              "raw": "{{host}}/api/exams/{{exam_id}}/answer",
+              "protocol": "http",
+              "host": ["{{host}}"],
+              "path": ["api", "exams", "{{exam_id}}", "answer"]
+            },
+            "description": "Answer first exam question with CORRECT answer (for testing). Uses dynamic IDs from exam start response."
+          },
+          "response": []
+        },
+        {
+          "name": "6. Answer Exam Question 2 (Wrong)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{student_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"questionId\": {{exam_question_2_id}},\n  \"selectedOptionId\": {{exam_question_2_wrong_option_id}}\n}"
+            },
+            "url": {
+              "raw": "{{host}}/api/exams/{{exam_id}}/answer",
+              "protocol": "http",
+              "host": ["{{host}}"],
+              "path": ["api", "exams", "{{exam_id}}", "answer"]
+            },
+            "description": "Answer second exam question with WRONG answer. Uses dynamic IDs from exam start response."
+          },
+          "response": []
+        },
+        {
+          "name": "7. Submit Exam",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{student_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{host}}/api/exams/{{exam_id}}/submit",
+              "protocol": "http",
+              "host": ["{{host}}"],
+              "path": ["api", "exams", "{{exam_id}}", "submit"]
+            },
+            "description": "Submit exam. This grades all answers and calculates score. Should show 50% (1 correct out of 2)."
+          },
+          "response": []
+        },
+        {
+          "name": "8. Get Exam Review",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{student_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/api/exams/{{exam_id}}/review",
+              "protocol": "http",
+              "host": ["{{host}}"],
+              "path": ["api", "exams", "{{exam_id}}", "review"]
+            },
+            "description": "Get exam review with correct answers revealed. Should show which answers were right/wrong."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ADMIN DASHBOARD",
+      "item": [
+        {
+          "name": "Get Admin Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/api/admin/dashboard",
+              "protocol": "http",
+              "host": ["{{host}}"],
+              "path": ["api", "admin", "dashboard"]
+            },
+            "description": "Admin only. Get system-wide statistics."
+          },
+          "response": []
+        },
+        {
+          "name": "List All Students",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/api/admin/users",
+              "protocol": "http",
+              "host": ["{{host}}"],
+              "path": ["api", "admin", "users"]
+            },
+            "description": "Admin only. List all registered students."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Question",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"questionNumber\": 301,\n  \"textRw\": \"What is the minimum age to drive a car in Rwanda?\",\n  \"isImageBased\": false,\n  \"options\": [\n    {\n      \"optionLetter\": \"a\",\n      \"textRw\": \"16 years\"\n    },\n    {\n      \"optionLetter\": \"b\",\n      \"textRw\": \"18 years\",\n      \"isCorrect\": true\n    },\n    {\n      \"optionLetter\": \"c\",\n      \"textRw\": \"21 years\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{host}}/api/admin/questions",
+              "protocol": "http",
+              "host": ["{{host}}"],
+              "path": ["api", "admin", "questions"]
+            },
+            "description": "Create a new question. Must have exactly 3-4 options with ONE marked as correct."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "host",
+      "value": "http://localhost:8080",
+      "type": "string",
+      "description": "Base URL of the API"
+    },
+    {
+      "key": "student_token",
+      "value": "",
+      "type": "string",
+      "description": "JWT token for student user"
+    },
+    {
+      "key": "admin_token",
+      "value": "",
+      "type": "string",
+      "description": "JWT token for admin user"
+    },
+    {
+      "key": "session_id",
+      "value": "",
+      "type": "string",
+      "description": "Practice session ID"
+    },
+    {
+      "key": "exam_id",
+      "value": "",
+      "type": "string",
+      "description": "Exam ID"
+    },
+    {
+      "key": "question_1_id",
+      "value": "",
+      "type": "string",
+      "description": "First question ID from practice session"
+    },
+    {
+      "key": "question_1_option_1_id",
+      "value": "",
+      "type": "string",
+      "description": "First option ID for question 1"
+    },
+    {
+      "key": "exam_question_1_id",
+      "value": "",
+      "type": "string",
+      "description": "First question ID from exam"
+    },
+    {
+      "key": "exam_question_1_correct_option_id",
+      "value": "",
+      "type": "string",
+      "description": "Correct option ID for exam question 1"
+    },
+    {
+      "key": "exam_question_2_id",
+      "value": "",
+      "type": "string",
+      "description": "Second question ID from exam"
+    },
+    {
+      "key": "exam_question_2_wrong_option_id",
+      "value": "",
+      "type": "string",
+      "description": "Wrong option ID for exam question 2"
+    }
+  ]
+}

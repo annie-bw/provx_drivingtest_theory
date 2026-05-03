@@ -1,0 +1,186 @@
+{
+  "landing": {
+    "badge": "Prepare well for your car exam in Kinyarwanda",
+    "title": "Study road rules, practice, pass the exam.",
+    "description": "Your practice and exam platform built like Duolingo, but focused on road rules and signs.",
+    "startNow": "Start now",
+    "seeFeatures": "See features",
+    "practiceTitle": "Safety Practice",
+    "practiceSubtitle": "20 Questions / Session",
+    "practiceDesc": "Learn signs, road rules, and behavior while preparing for the exam.",
+    "modes": {
+      "practice": "Practice Mode",
+      "exam": "Exam Mode",
+      "review": "Review Mode"
+    },
+    "modeDesc": "A level designed to help you study a lot.",
+    "features": {
+      "quickPractice": {
+        "title": "Quick Practice",
+        "description": "20 questions per session, quick answers, no time limit."
+      },
+      "certifiedExam": {
+        "title": "Certified Exam",
+        "description": "20 min, no feedback, results provided clearly and saved."
+      },
+      "admin": {
+        "title": "Administrator",
+        "description": "Administrator can manage question bank and user reports."
+      }
+    }
+  },
+  "auth": {
+    "title": "Sign in or register",
+    "subtitle": "Choose your side",
+    "description": "Choose \"Student\" if you're ready for practice and exams, or \"Admin\" if you're managing questions and decisions.",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "studentButton": "Register as Student",
+    "adminButton": "Register as Admin",
+    "benefits": {
+      "title": "Benefits",
+      "student": "Student: start practice, take exams, view reports.",
+      "admin": "Admin: manage question bank, modify questions, view user behavior."
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome",
+    "greeting": "Hello, {name}",
+    "description": "This is your practice and exam dashboard. Choose what you want to do then continue studying.",
+    "stats": {
+      "practiceSessions": "Practice sessions",
+      "exams": "Exams",
+      "bestScore": "Best score"
+    },
+    "upcoming": "Recent Exams",
+    "recentExams": "Recent Exams",
+    "progress": "Your Progress",
+    "level": "Level",
+    "novice": "Novice",
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "expert": "Expert",
+    "averageScore": "Average Score",
+    "noExams": "No exams taken yet",
+    "examReady": "Ready for Real Exam!",
+    "examReadyText": "You've completed 5 practice sessions. You're ready to take the real exam!",
+    "takeExam": "Take Real Exam",
+    "questionBanks": {
+      "warningSigns": "Warning signs",
+      "roadRules": "Road rules",
+      "spiritSpeed": "Spirit and speed"
+    },
+    "startPractice": "Start practice",
+    "takeExam": "Take exam",
+    "suggestion": "Suggestion",
+    "suggestionText": "You've completed 5 practice sessions! Ready for the real exam?",
+    "goToExam": "Go to exam",
+    "continuePractice": "Continue practice",
+    "practiceCard": {
+      "title": "Start Practice",
+      "description": "20 questions, no timer, instant answers."
+    },
+    "examCard": {
+      "title": "Take Exam",
+      "description": "20 min, no feedback, results saved."
+    },
+    "resultsCard": {
+      "title": "View Results",
+      "description": "See how you've performed in your exams."
+    }
+  },
+  "common": {
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "yes": "Yes",
+    "no": "No",
+    "welcome": "Welcome",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "backToDashboard": "Back to Dashboard",
+    "email": "Email",
+    "password": "Password",
+    "name": "Full Name",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "loading": "Loading...",
+    "questions": "Questions",
+    "unlimited": "Unlimited",
+    "time": "Time",
+    "feedback": "Feedback",
+    "immediate": "Immediate",
+    "toPass": "to pass",
+    "pass": "Pass",
+    "fail": "Fail",
+    "date": "Date",
+    "score": "Score",
+    "result": "Result",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?"
+  },
+  "results": {
+    "title": "Exam Results",
+    "subtitle": "Here's how you performed on your latest exam",
+    "score": "Your Score",
+    "passed": "Passed",
+    "failed": "Failed",
+    "questionsAnswered": "Questions Answered",
+    "correctAnswers": "Correct Answers",
+    "percentage": "Percentage",
+    "feedback": "Feedback",
+    "feedbackPassed": "Great job! You passed the exam. Keep up the good work!",
+    "feedbackFailed": "Don't worry! Review the incorrect answers and try again. Practice makes perfect.",
+    "recentHistory": "Recent Exam History",
+    "takeAnotherExam": "Take Another Exam",
+    "reviewAnswers": "Review Answers",
+    "noExams": "No exams completed yet.",
+    "startFirstExam": "Start Your First Exam"
+  },
+  "exam": {
+    "title": "Exam Mode",
+    "timeRemaining": "Time Remaining",
+    "progress": "Progress",
+    "navigator": "Question Navigator",
+    "submitButton": "Submit Exam",
+    "continueButton": "Answer {{count}} more questions",
+    "exitExam": "Exit Exam",
+    "questionCount": "Question {{current}} of {{total}}",
+    "answered": "answered",
+    "lastMinute": "Less than 1 minute remaining!",
+    "answeredSummary": "You have answered {{count}} out of {{total}} questions.",
+    "submitReady": "Are you ready to submit?",
+    "submitIncomplete": "You can still go back to answer unanswered questions.",
+    "previous": "← Previous",
+    "next": "Next →",
+    "submit": "Submit Exam"
+  },
+  "practice": {
+    "title": "Practice Mode",
+    "subtitle": "Test your knowledge with 20 questions",
+    "backToHome": "← Back to Home",
+    "questionCount": "Question {{current}} of {{total}}",
+    "scoreLabel": "Score",
+    "correct": "✅ Correct!",
+    "incorrect": "❌ Incorrect",
+    "correctAnswer": "Correct answer:",
+    "greatJob": "Great job! Moving to next question...",
+    "nextQuestion": "Next Question",
+    "completeTitle": "Practice Complete!",
+    "completeMessage": "You scored {{score}} out of {{total}}",
+    "viewDashboard": "View Dashboard",
+    "practiceAgain": "Practice Again"
+  },
+  "review": {
+    "title": "Review Mode",
+    "subtitle": "Review your most recent exam answers",
+    "backToDashboard": "Back to Dashboard",
+    "bankLabel": "Bank",
+    "correctOption": "(correct)",
+    "selectedOption": "(selected)",
+    "noExams": "No recent exams to review. Start your first exam to see answers."
+  }
+}

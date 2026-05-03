@@ -1,0 +1,186 @@
+{
+  "landing": {
+    "badge": "Itegure neza ikizamini cyawe cy'imodoka mu Kinyarwanda",
+    "title": "Wige amategeko y'umuhanda, ushiremo imyitozo, utsinde ikizamini.",
+    "description": "Platforme yawe y'imyitozo n'icyizamini yubatse nka Duolingo, ariko ikibanda ku mategeko y'umuhanda n'ibyapa.",
+    "startNow": "Tangira ubu",
+    "seeFeatures": "Reba ibyiza",
+    "practiceTitle": "Imyitozo y'umutekano",
+    "practiceSubtitle": "20 Bibazo / Session",
+    "practiceDesc": "Menya ibyapa, amategeko y'umuhanda, n'imyitwarire mu gihe witegura ikizamini.",
+    "modes": {
+      "practice": "Practice Mode",
+      "exam": "Exam Mode",
+      "review": "Review Mode"
+    },
+    "modeDesc": "Icyiciro cyaguteguriye kwiga cyane.",
+    "features": {
+      "quickPractice": {
+        "title": "Imyitozo yihuse",
+        "description": "20 bibazo muri session, igisubizo cyihuse, nta gihe gitegetswe."
+      },
+      "certifiedExam": {
+        "title": "Ikizamini cyemewe",
+        "description": "20 min, nta feedback, ibyavuye bigatangwa neza kandi bikabikwa."
+      },
+      "admin": {
+        "title": "Umuyobozi",
+        "description": "Umuyobozi ashobora gucunga banki y'ibibazo na raporo y'abakoresha."
+      }
+    }
+  },
+  "auth": {
+    "title": "Injira cyangwa wiyandikishe",
+    "subtitle": "Hitamo uruhande rwawe",
+    "description": "Hitamo \"Student\" niba witeguye imyitozo n'ibizamini, cyangwa \"Admin\" niba uri kuyobora ibibazo n'icyimezo.",
+    "noAccount": "Nta konti?",
+    "haveAccount": "Ufite konti?",
+    "studentButton": "Kwiyandikisha nka Student",
+    "adminButton": "Kwiyandikisha nka Admin",
+    "benefits": {
+      "title": "Inyunganizi",
+      "student": "Student: tangira imyitozo, ukore ibizamini, urebe raporo.",
+      "admin": "Admin: genzura banki y'ibibazo, uhindure ibibazo, urebe uko abakoresha bitwaye."
+    }
+  },
+  "dashboard": {
+    "welcome": "Ikaze",
+    "greeting": "Muraho neza, {name}",
+    "description": "Iyi ni dashboard yawe y'imyitozo n'ikizamini. Hitamo icyo ushaka gukora hanyuma ukomeze kwiga.",
+    "stats": {
+      "practiceSessions": "Sessions zakozwe",
+      "exams": "Ibizamini",
+      "bestScore": "Icyiciro cyiza"
+    },
+    "upcoming": "Ibizamini bya vuba",
+    "recentExams": "Ibizamini bya vuba",
+    "progress": "Aho ugeze",
+    "level": "Icyiciro",
+    "novice": "Intangarugero",
+    "beginner": "Umutangizi",
+    "intermediate": "Hagati",
+    "advanced": "Umunyabwenge",
+    "expert": "Impuguke",
+    "averageScore": "Icyiciro cy'imburagihe",
+    "noExams": "Nta bizamini wakorewe",
+    "examReady": "Witeguye Ikizamini Nyakuri!",
+    "examReadyText": "Wakoze imyitozo 5. Witeguye gukora ikizamini nyakuri!",
+    "takeExam": "Kora Ikizamini Nyakuri",
+    "questionBanks": {
+      "warningSigns": "Ibyapa byo kuburira",
+      "roadRules": "Amategeko y'umuhanda",
+      "spiritSpeed": "Umwuka n'umuvuduko"
+    },
+    "startPractice": "Tangira imyitozo",
+    "takeExam": "Kora ikizamini",
+    "suggestion": "Icyifuzo",
+    "suggestionText": "Wakoze imyitozo 5! Witeguye ikizamini nyakuri?",
+    "goToExam": "Jya ku kizami",
+    "continuePractice": "Komeza imyitozo",
+    "practiceCard": {
+      "title": "Tangira Imyitozo",
+      "description": "20 bibazo, nta timer, ibisubizo byihuse."
+    },
+    "examCard": {
+      "title": "Kora Ikizamini",
+      "description": "20 min, nta feedback, ibyavuyemo bibitswe."
+    },
+    "resultsCard": {
+      "title": "Reba Ibyavuye",
+      "description": "Urebe uko wagiye utsinda mu bizamini byawe."
+    }
+  },
+  "common": {
+    "back": "Subira inyuma",
+    "next": "Komeza",
+    "submit": "Ohereza",
+    "cancel": "Hagarika",
+    "yes": "Yego",
+    "no": "Oya",
+    "welcome": "Muraho",
+    "login": "Injira",
+    "register": "Iyandikishe",
+    "logout": "Sohoka",
+    "backToDashboard": "Subira kuri Dashboard",
+    "email": "Imeyili",
+    "password": "Ijambobanga",
+    "name": "Izina ryuzuye",
+    "firstName": "Izina rya mbere",
+    "lastName": "Izina rya nyuma",
+    "loading": "Ikiruta...",
+    "questions": "Ibibazo",
+    "unlimited": "Itagira intera",
+    "time": "Igihe",
+    "feedback": "Igisubizo",
+    "immediate": "Ako kanya",
+    "toPass": "gutsinda",
+    "pass": "Utsindiye",
+    "fail": "Ntabwo utsindiye",
+    "date": "Itariki",
+    "score": "Amanota",
+    "result": "Igisubizo",
+    "noAccount": "Nta konti?",
+    "haveAccount": "Ufite konti?"
+  },
+  "results": {
+    "title": "Ibyavuye mu Kizamini",
+    "subtitle": "Dore uko wagiye utsinda mu kizami cyawe cya nyuma",
+    "score": "Icyiciro cyawe",
+    "passed": "Watsinze",
+    "failed": "Watsinzwe",
+    "questionsAnswered": "Ibibazo Byasubijwe",
+    "correctAnswers": "Ibisubizo Byiza",
+    "percentage": "Ijanisha",
+    "feedback": "Igisubizo",
+    "feedbackPassed": "Akazi keza! Watsinze ikizamini. Komeza umurimo mwiza!",
+    "feedbackFailed": "Ntugire impungenge! Reba ibisubizo byabuze hanyuma ugerageze nanone. Imyitozo ituma ukora neza.",
+    "recentHistory": "Amateka y'Ibizamini Bya Vuba",
+    "takeAnotherExam": "Kora Ikizamini Kiriya",
+    "reviewAnswers": "Reba Ibisubizo",
+    "noExams": "Nta bizamini byarakozwe.",
+    "startFirstExam": "Tangira Ikizamini cya Mbere"
+  },
+  "exam": {
+    "title": "Exam Mode",
+    "timeRemaining": "Igihe gisigaye",
+    "progress": "Intambwe",
+    "navigator": "Umuyobozi w'ibibazo",
+    "submitButton": "Ohereza Ikizamini",
+    "continueButton": "Sobanura ibindi bibazo {{count}}",
+    "exitExam": "Sohoka mu Kizamini",
+    "questionCount": "Ikibazo {{current}} muri {{total}}",
+    "answered": "byasubijwe",
+    "lastMinute": "Hasigaye munsi y'iminota 1!",
+    "answeredSummary": "Wasubije ibibazo {{count}} muri {{total}}.",
+    "submitReady": "Witeguye kohereza?",
+    "submitIncomplete": "Washobora gusubira inyuma ugasubiza ibibazo utarasubije.",
+    "previous": "← Icyabanza",
+    "next": "Komeza →",
+    "submit": "Ohereza Ikizamini"
+  },
+  "practice": {
+    "title": "Practice Mode",
+    "subtitle": "Gerageza ubumenyi bwawe n'ibibazo 20",
+    "backToHome": "← Subira Ahabanza",
+    "questionCount": "Ikibazo {{current}} muri {{total}}",
+    "scoreLabel": "Icyizere",
+    "correct": "✅ Ni byo!",
+    "incorrect": "❌ Si byo",
+    "correctAnswer": "Igisubizo nyakuri:",
+    "greatJob": "Akazi keza! Tugana ku kibazo gikurikira...",
+    "nextQuestion": "Ikibazo gikurikira",
+    "completeTitle": "Imyitozo Yarangiye!",
+    "completeMessage": "Wabonye amanota {{score}} muri {{total}}",
+    "viewDashboard": "Reba Dashboard",
+    "practiceAgain": "Subira Gukora Imyitozo"
+  },
+  "review": {
+    "title": "Review Mode",
+    "subtitle": "Reba ibisubizo bya nyuma by'ikizamini",
+    "backToDashboard": "Subira kuri Dashboard",
+    "bankLabel": "Banki",
+    "correctOption": "(nyacyo)",
+    "selectedOption": "(wahisemo)",
+    "noExams": "Nta bizamini bya vuba byo gusuzuma. Tangira ikizamini cya mbere kugira ngo urebe ibisubizo."
+  }
+}

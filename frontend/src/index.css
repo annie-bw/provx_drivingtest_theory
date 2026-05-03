@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #2563eb;
+  --color-primary-dark: #1d4ed8;
+  --color-primary-light: #dbeafe;
+  --color-surface: #f8fafc;
+  --color-surface-dark: #f1f5f9;
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-surface text-slate-900 antialiased;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  @apply font-sans;
+}
+
+::selection {
+  background: rgba(37, 99, 235, 0.2);
+}
+
+.shadow-soft {
+  box-shadow: 0 10px 40px rgba(37, 99, 235, 0.1), 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-card {
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.08);
+}
+
+.btn-primary {
+  @apply bg-primary px-6 py-3 text-white font-medium rounded-xl transition-all duration-200 hover:bg-primary-dark hover:shadow-lg hover:scale-105 active:scale-95;
+}
+
+.btn-secondary {
+  @apply border border-slate-200 bg-white px-6 py-3 text-slate-700 font-medium rounded-xl transition-all duration-200 hover:border-slate-300 hover:bg-slate-50 hover:shadow-md;
+}
+
+.card {
+  @apply bg-white rounded-2xl shadow-card border border-slate-100;
+}
+
+.input-field {
+  @apply w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all;
+}
