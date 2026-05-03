@@ -28,7 +28,7 @@ export default function PracticePage() {
   const navigate = useNavigate();
   const [session, setSession] = useState<PracticeSessionResponse | null>(null);
   const [current, setCurrent] = useState(0);
-  const [selectedOptionId, setSelectedOptionId] = useState<number | null>(null);
+  const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<PracticeAnswerResponse | null>(null);
   const [score, setScore] = useState(0);
   const [completed, setCompleted] = useState(false);
@@ -62,7 +62,7 @@ export default function PracticePage() {
         if (savedSessionId) {
           try {
             practiceSession = await getPracticeSession(
-              Number(savedSessionId),
+              savedSessionId,
               token,
             );
           } catch (err) {
@@ -82,9 +82,6 @@ export default function PracticePage() {
           sessionStorage.setItem(SESSION_ID_KEY, practiceSession.id.toString());
         }
 
-        // Preload all images before showing the practice session
-        await preloadQuestionImages(practiceSession.questions);
-
         setSession(practiceSession);
         setCurrent(
           savedIndex >= 0 && savedIndex < practiceSession.questions.length
@@ -93,6 +90,11 @@ export default function PracticePage() {
         );
         setScore(savedScore);
         setCompleted(practiceSession.status !== "IN_PROGRESS");
+
+        // Preload question images in the background without blocking page render
+        preloadQuestionImages(practiceSession.questions).catch(() => {
+          // ignore preload failures; session can still be used
+        });
       } catch (err) {
         setError(
           err instanceof Error
@@ -134,13 +136,13 @@ export default function PracticePage() {
   const question = session?.questions[current];
   const total = session?.totalQuestions ?? 0;
 
-  const handleSelect = async (optionId: number) => {
+  const handleSelect = async (optionId: string) => {
     if (!session || selectedOptionId !== null || completed || !token) return;
     setSelectedOptionId(optionId);
 
     try {
       const answer = await submitPracticeAnswer(
-        session.id,
+        session.id as unknown as string,
         {
           questionId: question!.id,
           selectedOptionId: optionId,
