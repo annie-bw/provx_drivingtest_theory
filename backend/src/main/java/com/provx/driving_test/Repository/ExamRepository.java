@@ -2,12 +2,15 @@ package com.provx.driving_test.Repository;
 
 import com.provx.driving_test.models.Exam;
 import com.provx.driving_test.enums.ExamStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Optional;
 
 @Repository
@@ -19,6 +22,12 @@ public interface ExamRepository extends JpaRepository<Exam, Long> {
     // Get student's exam history, newest first
     List<Exam> findByUserIdOrderByStartedAtDesc(Long userId);
 
+    // Get paginated student exam history, newest first
+    Page<Exam> findByUserIdOrderByStartedAtDesc(Long userId, Pageable pageable);
+
+    // Get latest completed exam for a student
+    Optional<Exam> findFirstByUserIdAndStatusInOrderBySubmittedAtDesc(Long userId, List<ExamStatus> statuses);
+
     // Admin — count exams by status
     long countByStatus(ExamStatus status);
 
@@ -27,6 +36,10 @@ public interface ExamRepository extends JpaRepository<Exam, Long> {
 
     // Admin — get all exams ordered by start time desc
     List<Exam> findAllByOrderByStartedAtDesc();
+
+    // OPTIMIZED: Get top 10 completed exams directly from DB
+    @Query("SELECT e FROM Exam e WHERE e.status IN ('SUBMITTED', 'TIMED_OUT') ORDER BY e.startedAt DESC")
+    List<Exam> findTop10CompletedByOrderByStartedAtDesc(Pageable pageable);
 
     // Admin — count exams for a user
     long countByUserId(Long userId);

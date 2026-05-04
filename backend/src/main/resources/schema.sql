@@ -131,6 +131,9 @@ CREATE TABLE IF NOT EXISTS session_questions (
 -- INDEXES
 -- ============================================================
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_users_is_active ON users(is_active);
+CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
+CREATE INDEX IF NOT EXISTS idx_users_created_at ON users(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_questions_active ON questions(is_active);
 CREATE INDEX IF NOT EXISTS idx_questions_image ON questions(is_image_based);
 CREATE INDEX IF NOT EXISTS idx_practice_user ON practice_sessions(user_id);
@@ -138,5 +141,12 @@ CREATE INDEX IF NOT EXISTS idx_practice_status ON practice_sessions(status);
 CREATE INDEX IF NOT EXISTS idx_practice_answers_session ON practice_answers(session_id);
 CREATE INDEX IF NOT EXISTS idx_exams_user ON exams(user_id);
 CREATE INDEX IF NOT EXISTS idx_exams_status ON exams(status);
+CREATE INDEX IF NOT EXISTS idx_exams_passed ON exams(passed);
+CREATE INDEX IF NOT EXISTS idx_exams_user_status ON exams(user_id, status);
+CREATE INDEX IF NOT EXISTS idx_exams_started_at ON exams(started_at DESC);
+CREATE INDEX IF NOT EXISTS idx_exams_user_started_at ON exams(user_id, started_at DESC);
+CREATE INDEX IF NOT EXISTS idx_exams_user_status_submitted_at ON exams(user_id, status, submitted_at DESC);
+CREATE INDEX IF NOT EXISTS idx_practice_user_status ON practice_sessions(user_id, status);
+CREATE INDEX IF NOT EXISTS idx_practice_user_started_at ON practice_sessions(user_id, started_at DESC);
 CREATE INDEX IF NOT EXISTS idx_exam_answers_exam ON exam_answers(exam_id);
 CREATE INDEX IF NOT EXISTS idx_session_questions ON session_questions(session_type, session_id);

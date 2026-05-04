@@ -15,7 +15,9 @@ import type {
   AdminDashboard,
   AdminQuestion,
   AdminQuestionFormValues,
+  AdminQuestionPage,
   AdminUser,
+  AdminUserPage,
 } from "../types";
 
 type Tab = "dashboard" | "questions" | "users";
@@ -27,7 +29,11 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<Tab>("dashboard");
   const [dashboard, setDashboard] = useState<AdminDashboard | null>(null);
   const [adminQuestions, setAdminQuestions] = useState<AdminQuestion[]>([]);
+  const [adminQuestionsPage, setAdminQuestionsPage] = useState<AdminQuestionPage | null>(null);
+  const [questionPage, setQuestionPage] = useState(0);
   const [adminUsers, setAdminUsers] = useState<AdminUser[]>([]);
+  const [adminUsersPage, setAdminUsersPage] = useState<AdminUserPage | null>(null);
+  const [userPage, setUserPage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -90,23 +96,33 @@ export default function AdminPage() {
     setIsLoading(true);
     setError(null);
 
-    Promise.all([
-      getAdminDashboard(user.token),
-      getAdminUsers(user.token),
-      getAdminQuestions(user.token),
-    ])
-      .then(([dashboardData, usersData, questionsData]) => {
+    const loadInitialData = async () => {
+      try {
+        const [dashboardData, questionsData] = await Promise.all([
+          getAdminDashboard(user.token!),
+          getAdminQuestions(user.token!),
+        ]);
         setDashboard(dashboardData);
-        setAdminUsers(usersData);
-        setAdminQuestions(questionsData);
-      })
-      .catch((err) => {
+        setAdminQuestionsPage(questionsData);
+        setAdminQuestions(questionsData.items || []);
+        setQuestionPage(0);
+
+        // Load first page of users
+        const usersData = await getAdminUsers(user.token!, 0, 20);
+        setAdminUsersPage(usersData);
+        setAdminUsers(usersData.items || []);
+        setUserPage(0);
+      } catch (err) {
         console.error("Failed to load admin data", err);
         setError(
           err instanceof Error ? err.message : "Failed to load admin data",
         );
-      })
-      .finally(() => setIsLoading(false));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadInitialData();
   }, [user?.token]);
 
   const handleDeleteQuestion = async (questionId: number) => {
@@ -148,6 +164,20 @@ export default function AdminPage() {
       );
     } finally {
       setActionLoading(false);
+    }
+  };
+
+  const loadUsers = async (page: number) => {
+    if (!user?.token) return;
+
+    try {
+      const usersData = await getAdminUsers(user.token, page, 20);
+      setAdminUsersPage(usersData);
+      setAdminUsers(usersData.items || []);
+      setUserPage(page);
+    } catch (err) {
+      console.error("Failed to load users page", err);
+      setError(err instanceof Error ? err.message : "Failed to load users");
     }
   };
 
@@ -767,6 +797,32 @@ export default function AdminPage() {
           </tbody>
         </table>
       </div>
+
+      {/* Pagination Controls */}
+      {adminUsersPage && (
+        <div className="mt-6 flex items-center justify-between border-t border-slate-200 pt-6">
+          <div className="text-sm text-slate-600">
+            Page {adminUsersPage.page + 1} of {adminUsersPage.totalPages} —{" "}
+            {adminUsersPage.totalItems} users total
+          </div>
+          <div className="flex gap-3">
+            <button
+              onClick={() => loadUsers(userPage - 1)}
+              disabled={userPage === 0}
+              className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-400 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              ← Previous
+            </button>
+            <button
+              onClick={() => loadUsers(userPage + 1)}
+              disabled={userPage >= adminUsersPage.totalPages - 1}
+              className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-400 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Next →
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 

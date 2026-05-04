@@ -2,6 +2,7 @@ package com.provx.driving_test.controllers;
 
 import com.provx.driving_test.dtos.request.AnswerRequest;
 import com.provx.driving_test.dtos.response.ApiResponse;
+import com.provx.driving_test.dtos.response.PaginatedResponse;
 import com.provx.driving_test.dtos.response.PracticeAnswerResponse;
 import com.provx.driving_test.dtos.response.PracticeSessionResponse;
 import com.provx.driving_test.models.User;
@@ -62,13 +63,15 @@ public class PracticeController {
     }
 
     // GET /api/practice/history
-    // Get student's full practice history
+    // Get student's paginated practice history
     @GetMapping("/history")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiResponse<List<PracticeSessionResponse>>> getHistory(
-            @AuthenticationPrincipal User user) {
+    public ResponseEntity<ApiResponse<PaginatedResponse<PracticeSessionResponse>>> getHistory(
+            @AuthenticationPrincipal User user,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
 
-        List<PracticeSessionResponse> data = practiceService.getHistory(user.getId());
+        PaginatedResponse<PracticeSessionResponse> data = practiceService.getHistoryPage(user.getId(), page, size);
         return ResponseEntity.ok(ApiResponse.success("Practice history retrieved", data));
     }
 }

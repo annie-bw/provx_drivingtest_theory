@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/AuthContext";
-import { getExamHistory, reviewExam } from "../api/exam";
+import { getLatestCompletedExam, reviewExam } from "../api/exam";
 import type { ExamAnswerResponse, ExamResponse } from "../types";
 
 export default function ReviewPage() {
@@ -20,21 +20,12 @@ export default function ReviewPage() {
     setLoading(true);
     setError(null);
 
-    getExamHistory(token)
-      .then((history) => {
-        const latest = history
-          .filter((exam) => exam.submittedAt)
-          .sort(
-            (a, b) =>
-              new Date(b.submittedAt ?? b.startedAt).getTime() -
-              new Date(a.submittedAt ?? a.startedAt).getTime(),
-          )[0];
-
+    getLatestCompletedExam(token)
+      .then((latest) => {
         if (!latest) {
           setReviewExamData(null);
           return;
         }
-
         return reviewExam(latest.id, token).then(setReviewExamData);
       })
       .catch((err) => {

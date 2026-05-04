@@ -1,5 +1,6 @@
 import { apiRequest } from "./client";
 import type {
+  ExamHistoryPage,
   ExamResponse,
   ExamAnswerResponse,
   DashboardResponse,
@@ -74,9 +75,25 @@ export async function reviewExam(
   );
 }
 
-export async function getExamHistory(token: string): Promise<ExamResponse[]> {
-  return apiRequest<ExamResponse[]>(
-    "/exams/history",
+export async function getExamHistory(
+  token: string,
+  page = 0,
+  size = 20,
+): Promise<ExamHistoryPage> {
+  return apiRequest<ExamHistoryPage>(
+    `/exams/history?page=${page}&size=${size}`,
+    {
+      method: "GET",
+    },
+    token,
+  );
+}
+
+export async function getLatestCompletedExam(
+  token: string,
+): Promise<ExamResponse> {
+  return apiRequest<ExamResponse>(
+    "/exams/history/latest",
     {
       method: "GET",
     },

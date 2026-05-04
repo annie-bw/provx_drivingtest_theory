@@ -93,6 +93,17 @@ export interface PracticeSessionResponse {
   questions: ApiQuestion[];
 }
 
+export interface PaginatedResponse<T> {
+  items: T[];
+  page: number;
+  size: number;
+  totalItems: number;
+  totalPages: number;
+}
+
+export interface ExamHistoryPage extends PaginatedResponse<ExamResponse> {}
+export interface PracticeHistoryPage extends PaginatedResponse<PracticeSessionResponse> {}
+
 export interface PracticeAnswerResponse {
   questionId: string;
   selectedOptionId: string | null;
@@ -148,6 +159,22 @@ export interface AdminQuestion {
   imageUrl?: string;
   position: number;
   options: AdminQuestionOption[];
+}
+
+export interface AdminQuestionPage {
+  items: AdminQuestion[];
+  page: number;
+  size: number;
+  totalItems: number;
+  totalPages: number;
+}
+
+export interface AdminUserPage {
+  items: AdminUser[];
+  page: number;
+  size: number;
+  totalItems: number;
+  totalPages: number;
 }
 
 export interface AdminQuestionFormValues {

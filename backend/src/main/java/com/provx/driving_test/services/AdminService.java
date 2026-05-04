@@ -2,6 +2,7 @@ package com.provx.driving_test.services;
 
 import com.provx.driving_test.dtos.response.DashboardResponse;
 import com.provx.driving_test.dtos.response.ExamResponse;
+import com.provx.driving_test.dtos.response.PaginatedResponse;
 import com.provx.driving_test.dtos.response.UserResponse;
 import com.provx.driving_test.enums.ExamStatus;
 import com.provx.driving_test.enums.Role;
@@ -13,6 +14,10 @@ import com.provx.driving_test.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -35,8 +40,7 @@ public class AdminService {
         @Transactional
         public DashboardResponse getAdminDashboard() {
                 long totalStudents = userRepository.countByRole(Role.STUDENT);
-                long totalActive = userRepository.findByIsActiveTrue().stream()
-                                .filter(u -> u.getRole() == Role.STUDENT).count();
+                long totalActive = userRepository.countByRoleAndIsActiveTrue(Role.STUDENT);
                 long totalQuestions = questionRepository.countByIsActiveTrue();
                 long totalImageQ = questionRepository.countByIsImageBasedTrue();
                 long totalExams = examRepository.countByStatus(ExamStatus.SUBMITTED);
@@ -48,20 +52,27 @@ public class AdminService {
                                                 .multiply(BigDecimal.valueOf(100))
                                 : BigDecimal.ZERO;
 
-                // Last 10 exams across all students (only completed ones for review)
-                List<ExamResponse> recentExams = examRepository.findAllByOrderByStartedAtDesc()
+                // Last 10 exams across all students (only completed ones)
+                Pageable examPageable = PageRequest.of(0, 10);
+                List<ExamResponse> recentExams = examRepository.findTop10CompletedByOrderByStartedAtDesc(examPageable)
                                 .stream()
-                                .filter(e -> e.getStatus() == ExamStatus.SUBMITTED
-                                                || e.getStatus() == ExamStatus.TIMED_OUT)
-                                .limit(10)
-                                .map(e -> examService.getReview(e.getId(), e.getUser().getId()))
+                                .map(e -> ExamResponse.builder()
+                                                .id(e.getId().toString())
+                                                .status(e.getStatus())
+                                                .totalQuestions(e.getTotalQuestions())
+                                                .correctCount(e.getCorrectCount())
+                                                .scorePercent(e.getScorePercent())
+                                                .passed(e.getPassed())
+                                                .durationSeconds(calculateExamDuration(e))
+                                                .startedAt(e.getStartedAt())
+                                                .submittedAt(e.getSubmittedAt())
+                                                .build())
                                 .collect(Collectors.toList());
 
                 // Last 10 registered users
-                List<UserResponse> recentUsers = userRepository.findAll().stream()
-                                .filter(u -> u.getRole() == Role.STUDENT)
-                                .sorted((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()))
-                                .limit(10)
+                Pageable userPageable = PageRequest.of(0, 10);
+                List<UserResponse> recentUsers = userRepository.findByRoleOrderByCreatedAtDesc(Role.STUDENT, userPageable)
+                                .stream()
                                 .map(this::toUserResponse)
                                 .collect(Collectors.toList());
 
@@ -153,6 +164,26 @@ public class AdminService {
                 return userRepository.findByRole(Role.STUDENT).stream()
                                 .map(this::toUserResponse)
                                 .collect(Collectors.toList());
+        }
+
+        // -------------------------------------------------------
+        // ADMIN — list all students paginated
+        // -------------------------------------------------------
+        public PaginatedResponse<UserResponse> getStudentsPage(int page, int size) {
+                Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+                Page<User> userPage = userRepository.findByRoleOrderByCreatedAtDesc(Role.STUDENT, pageable);
+
+                List<UserResponse> users = userPage.getContent().stream()
+                                .map(this::toUserResponse)
+                                .collect(Collectors.toList());
+
+                return PaginatedResponse.<UserResponse>builder()
+                                .items(users)
+                                .page(userPage.getNumber())
+                                .size(userPage.getSize())
+                                .totalItems(userPage.getTotalElements())
+                                .totalPages(userPage.getTotalPages())
+                                .build();
         }
 
         // -------------------------------------------------------

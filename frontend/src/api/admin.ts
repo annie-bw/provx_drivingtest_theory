@@ -1,5 +1,11 @@
 import { apiRequest } from "./client";
-import type { AdminDashboard, AdminQuestion, AdminUser } from "../types";
+import type {
+  AdminDashboard,
+  AdminQuestion,
+  AdminQuestionPage,
+  AdminUser,
+  AdminUserPage,
+} from "../types";
 
 export async function getAdminDashboard(
   token: string,
@@ -13,9 +19,13 @@ export async function getAdminDashboard(
   );
 }
 
-export async function getAdminUsers(token: string): Promise<AdminUser[]> {
-  return apiRequest<AdminUser[]>(
-    "/admin/users",
+export async function getAdminUsers(
+  token: string,
+  page = 0,
+  size = 20,
+): Promise<AdminUserPage> {
+  return apiRequest<AdminUserPage>(
+    `/admin/users?page=${page}&size=${size}`,
     {
       method: "GET",
     },
@@ -25,9 +35,11 @@ export async function getAdminUsers(token: string): Promise<AdminUser[]> {
 
 export async function getAdminQuestions(
   token: string,
-): Promise<AdminQuestion[]> {
-  return apiRequest<AdminQuestion[]>(
-    "/admin/questions",
+  page = 0,
+  size = 20,
+): Promise<AdminQuestionPage> {
+  return apiRequest<AdminQuestionPage>(
+    `/admin/questions?page=${page}&size=${size}`,
     {
       method: "GET",
     },

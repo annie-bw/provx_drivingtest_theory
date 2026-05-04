@@ -3,6 +3,7 @@ package com.provx.driving_test.services;
 import com.provx.driving_test.dtos.request.AnswerRequest;
 import com.provx.driving_test.dtos.response.ExamAnswerResponse;
 import com.provx.driving_test.dtos.response.ExamResponse;
+import com.provx.driving_test.dtos.response.PaginatedResponse;
 import com.provx.driving_test.dtos.response.OptionResponse;
 import com.provx.driving_test.dtos.response.QuestionResponse;
 import com.provx.driving_test.enums.ExamStatus;
@@ -11,6 +12,10 @@ import com.provx.driving_test.exceptions.ApiException;
 import com.provx.driving_test.models.*;
 import com.provx.driving_test.Repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -265,11 +270,35 @@ public class ExamService {
         // -------------------------------------------------------
         // GET student's exam history
         // -------------------------------------------------------
-        @Transactional
-        public List<ExamResponse> getHistory(Long userId) {
-                return examRepository.findByUserIdOrderByStartedAtDesc(userId).stream()
+        @Transactional(readOnly = true)
+        public PaginatedResponse<ExamResponse> getHistoryPage(Long userId, int page, int size) {
+                Pageable pageable = PageRequest.of(page, size, Sort.by("startedAt").descending());
+                Page<Exam> examPage = examRepository.findByUserIdOrderByStartedAtDesc(userId, pageable);
+
+                List<ExamResponse> exams = examPage.getContent().stream()
                                 .map(e -> buildExamResponse(e, null, null, null))
                                 .collect(Collectors.toList());
+
+                return PaginatedResponse.<ExamResponse>builder()
+                                .items(exams)
+                                .page(examPage.getNumber())
+                                .size(examPage.getSize())
+                                .totalItems(examPage.getTotalElements())
+                                .totalPages(examPage.getTotalPages())
+                                .build();
+        }
+
+        // -------------------------------------------------------
+        // GET student's latest completed exam (fast path for review)
+        // -------------------------------------------------------
+        @Transactional(readOnly = true)
+        public ExamResponse getLatestCompletedExam(Long userId) {
+                Exam exam = examRepository
+                                .findFirstByUserIdAndStatusInOrderBySubmittedAtDesc(userId,
+                                                List.of(ExamStatus.SUBMITTED, ExamStatus.TIMED_OUT))
+                                .orElseThrow(() -> ApiException.notFound("Completed exam", userId));
+
+                return buildExamResponse(exam, null, null, null);
         }
 
         // -------------------------------------------------------

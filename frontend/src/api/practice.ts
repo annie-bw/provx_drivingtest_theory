@@ -1,5 +1,9 @@
 import { apiRequest } from "./client";
-import type { PracticeSessionResponse, PracticeAnswerResponse } from "../types";
+import type {
+  PracticeHistoryPage,
+  PracticeSessionResponse,
+  PracticeAnswerResponse,
+} from "../types";
 
 export interface AnswerRequest {
   questionId: string;
@@ -48,9 +52,11 @@ export async function submitPracticeAnswer(
 
 export async function getPracticeHistory(
   token: string,
-): Promise<PracticeSessionResponse[]> {
-  return apiRequest<PracticeSessionResponse[]>(
-    "/practice/history",
+  page = 0,
+  size = 20,
+): Promise<PracticeHistoryPage> {
+  return apiRequest<PracticeHistoryPage>(
+    `/practice/history?page=${page}&size=${size}`,
     {
       method: "GET",
     },

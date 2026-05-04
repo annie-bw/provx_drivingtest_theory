@@ -1,6 +1,7 @@
 package com.provx.driving_test.services;
 
 import com.provx.driving_test.dtos.request.AnswerRequest;
+import com.provx.driving_test.dtos.response.PaginatedResponse;
 import com.provx.driving_test.dtos.response.PracticeAnswerResponse;
 import com.provx.driving_test.dtos.response.PracticeSessionResponse;
 import com.provx.driving_test.dtos.response.QuestionResponse;
@@ -10,6 +11,10 @@ import com.provx.driving_test.exceptions.ApiException;
 import com.provx.driving_test.models.*;
 import com.provx.driving_test.Repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -204,8 +209,11 @@ public class PracticeService {
         // GET student's practice history
         // -------------------------------------------------------
         @Transactional(readOnly = true)
-        public List<PracticeSessionResponse> getHistory(Long userId) {
-                return practiceSessionRepository.findByUserIdOrderByStartedAtDesc(userId).stream()
+        public PaginatedResponse<PracticeSessionResponse> getHistoryPage(Long userId, int page, int size) {
+                Pageable pageable = PageRequest.of(page, size, Sort.by("startedAt").descending());
+                Page<PracticeSession> sessionPage = practiceSessionRepository.findByUserIdOrderByStartedAtDesc(userId, pageable);
+
+                List<PracticeSessionResponse> sessions = sessionPage.getContent().stream()
                                 .map(s -> PracticeSessionResponse.builder()
                                                 .id(s.getId().toString())
                                                 .status(s.getStatus())
@@ -216,6 +224,14 @@ public class PracticeService {
                                                 .completedAt(s.getCompletedAt())
                                                 .build())
                                 .collect(Collectors.toList());
+
+                return PaginatedResponse.<PracticeSessionResponse>builder()
+                                .items(sessions)
+                                .page(sessionPage.getNumber())
+                                .size(sessionPage.getSize())
+                                .totalItems(sessionPage.getTotalElements())
+                                .totalPages(sessionPage.getTotalPages())
+                                .build();
         }
 
         // -------------------------------------------------------

@@ -1,6 +1,7 @@
 package com.provx.driving_test.controllers;
 
 import com.provx.driving_test.dtos.request.QuestionRequest;
+import com.provx.driving_test.dtos.response.PaginatedResponse;
 import com.provx.driving_test.dtos.response.*;
 import com.provx.driving_test.models.User;
 import com.provx.driving_test.services.AdminService;
@@ -43,9 +44,11 @@ public class AdminController {
     // GET /api/admin/users
     // List all registered students
     @GetMapping("/users")
-    public ResponseEntity<ApiResponse<List<UserResponse>>> getAllStudents() {
+    public ResponseEntity<ApiResponse<PaginatedResponse<UserResponse>>> getAllStudents(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
         return ResponseEntity.ok(
-                ApiResponse.success("Students retrieved", adminService.getAllStudents()));
+                ApiResponse.success("Students retrieved", adminService.getStudentsPage(page, size)));
     }
 
     // PATCH /api/admin/users/{userId}/toggle-active
@@ -66,9 +69,12 @@ public class AdminController {
 
     // GET /api/admin/questions
     @GetMapping("/questions")
-    public ResponseEntity<ApiResponse<List<QuestionResponse>>> getAllQuestions() {
+    public ResponseEntity<ApiResponse<PaginatedResponse<QuestionResponse>>> getAllQuestions(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
         return ResponseEntity.ok(
-                ApiResponse.success("Questions retrieved", questionService.getAllQuestions()));
+                ApiResponse.success("Questions retrieved",
+                        questionService.getQuestionsPage(page, size)));
     }
 
     // GET /api/admin/questions/{id}

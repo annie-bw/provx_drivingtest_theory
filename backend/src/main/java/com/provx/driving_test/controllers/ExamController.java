@@ -5,6 +5,7 @@ import com.provx.driving_test.dtos.response.ApiResponse;
 import com.provx.driving_test.dtos.response.DashboardResponse;
 import com.provx.driving_test.dtos.response.ExamAnswerResponse;
 import com.provx.driving_test.dtos.response.ExamResponse;
+import com.provx.driving_test.dtos.response.PaginatedResponse;
 import com.provx.driving_test.models.User;
 import com.provx.driving_test.services.AdminService;
 import com.provx.driving_test.services.ExamService;
@@ -91,14 +92,27 @@ public class ExamController {
     }
 
     // GET /api/exams/history
-    // Get student's full exam history
+    // Get student's paginated exam history
     @GetMapping("/history")
     @PreAuthorize("hasRole('STUDENT')")
-    public ResponseEntity<ApiResponse<List<ExamResponse>>> getHistory(
+    public ResponseEntity<ApiResponse<PaginatedResponse<ExamResponse>>> getHistory(
+            @AuthenticationPrincipal User user,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+
+        PaginatedResponse<ExamResponse> data = examService.getHistoryPage(user.getId(), page, size);
+        return ResponseEntity.ok(ApiResponse.success("Exam history retrieved", data));
+    }
+
+    // GET /api/exams/history/latest
+    // Get the latest completed exam for review quickly
+    @GetMapping("/history/latest")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ResponseEntity<ApiResponse<ExamResponse>> getLatestCompletedExam(
             @AuthenticationPrincipal User user) {
 
-        List<ExamResponse> data = examService.getHistory(user.getId());
-        return ResponseEntity.ok(ApiResponse.success("Exam history retrieved", data));
+        ExamResponse data = examService.getLatestCompletedExam(user.getId());
+        return ResponseEntity.ok(ApiResponse.success("Latest completed exam retrieved", data));
     }
 
     // GET /api/exams/dashboard

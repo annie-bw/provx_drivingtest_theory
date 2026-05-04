@@ -2,6 +2,7 @@ package com.provx.driving_test.services;
 
 import com.provx.driving_test.dtos.request.QuestionRequest;
 import com.provx.driving_test.dtos.response.OptionResponse;
+import com.provx.driving_test.dtos.response.PaginatedResponse;
 import com.provx.driving_test.dtos.response.QuestionResponse;
 import com.provx.driving_test.exceptions.ApiException;
 import com.provx.driving_test.models.Question;
@@ -10,6 +11,11 @@ import com.provx.driving_test.Repository.QuestionOptionRepository;
 import com.provx.driving_test.Repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,10 +84,32 @@ public class QuestionService {
         // ADMIN — Get all questions
         // -------------------------------------------------------
         @Transactional(readOnly = true)
+        @Cacheable("questions")
         public List<QuestionResponse> getAllQuestions() {
                 return questionRepository.findByIsActiveTrue().stream()
                                 .map(q -> toResponse(q, q.getQuestionNumber(), true))
                                 .collect(Collectors.toList());
+        }
+
+        // -------------------------------------------------------
+        // ADMIN — Get paginated active questions
+        // -------------------------------------------------------
+        @Transactional(readOnly = true)
+        public PaginatedResponse<QuestionResponse> getQuestionsPage(int page, int size) {
+                Pageable pageable = PageRequest.of(page, size, Sort.by("questionNumber").ascending());
+                Page<Question> questionPage = questionRepository.findByIsActiveTrue(pageable);
+
+                List<QuestionResponse> questions = questionPage.getContent().stream()
+                                .map(q -> toResponse(q, q.getQuestionNumber(), true))
+                                .collect(Collectors.toList());
+
+                return PaginatedResponse.<QuestionResponse>builder()
+                                .items(questions)
+                                .page(questionPage.getNumber())
+                                .size(questionPage.getSize())
+                                .totalItems(questionPage.getTotalElements())
+                                .totalPages(questionPage.getTotalPages())
+                                .build();
         }
 
         // -------------------------------------------------------

@@ -9,6 +9,7 @@ import { getPracticeHistory } from "../api/practice";
 import type {
   DashboardResponse,
   ExamResponse,
+  PracticeHistoryPage,
   PracticeSessionResponse,
 } from "../types";
 
@@ -22,6 +23,7 @@ export default function DashboardPage() {
   const [practiceSessions, setPracticeSessions] = useState<
     PracticeSessionResponse[]
   >([]);
+  const [practiceHistoryPage, setPracticeHistoryPage] = useState<PracticeHistoryPage | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,10 +40,11 @@ export default function DashboardPage() {
         setIsLoading(true);
         const [dashboard, practiceHistory] = await Promise.all([
           getDashboard(user.token),
-          getPracticeHistory(user.token),
+          getPracticeHistory(user.token, 0, 5),
         ]);
         setDashboardData(dashboard);
-        setPracticeSessions(practiceHistory);
+        setPracticeHistoryPage(practiceHistory);
+        setPracticeSessions(practiceHistory.items || []);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "Failed to load dashboard",
@@ -85,9 +88,7 @@ export default function DashboardPage() {
   };
 
   const progress = calculateProgress();
-  const completedPracticeCount = practiceSessions.filter(
-    (session) => session.status === "COMPLETED",
-  ).length;
+  const completedPracticeCount = dashboardData?.totalPracticeSessions ?? 0;
   const showExamNotification =
     completedPracticeCount >= 5 &&
     (!dashboardData || dashboardData.totalExamsTaken === 0);
@@ -96,7 +97,7 @@ export default function DashboardPage() {
     {
       icon: "✏️",
       label: t("dashboard.stats.practiceSessions"),
-      value: practiceSessions.length.toString(),
+      value: dashboardData?.totalPracticeSessions.toString() ?? "0",
       sub: "sessions",
     },
     {
