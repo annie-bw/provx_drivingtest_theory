@@ -44,6 +44,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     long countStudents(Role role);
 
     // Admin — direct count of active students
-    @Query("SELECT COUNT(u) FROM User u WHERE u.is_active = true AND u.role = ?1")
+    @Query("SELECT COUNT(u) FROM User u WHERE u.isActive = true AND u.role = ?1")
     long countActiveStudents(Role role);
 }
