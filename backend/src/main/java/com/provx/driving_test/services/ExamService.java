@@ -129,7 +129,7 @@ public class ExamService {
         // -------------------------------------------------------
         @Transactional
         public ExamAnswerResponse saveAnswer(Long examId, Long userId, AnswerRequest request) {
-                Exam exam = getValidActiveExam(examId, userId);
+                getValidActiveExam(examId, userId);
 
                 // Get the pre-created answer row for this question
                 ExamAnswer answer = examAnswerRepository
@@ -302,6 +302,18 @@ public class ExamService {
         }
 
         // -------------------------------------------------------
+        // GET the current in-progress exam if any
+        // -------------------------------------------------------
+        @Transactional(readOnly = true)
+        public ExamResponse getCurrentExam(Long userId) {
+                Exam exam = examRepository.findByUserIdAndStatus(userId, ExamStatus.IN_PROGRESS).orElse(null);
+                if (exam == null) {
+                        return null;
+                }
+                return getExam(exam.getId(), userId);
+        }
+
+        // -------------------------------------------------------
         // Private — validate exam is active and belongs to user
         // -------------------------------------------------------
         private Exam getValidActiveExam(Long examId, Long userId) {
@@ -325,7 +337,6 @@ public class ExamService {
         // -------------------------------------------------------
         // Private — grade all answers and close the exam
         // -------------------------------------------------------
-        @Transactional
         private ExamResponse gradeAndClose(Exam exam, ExamStatus finalStatus) {
                 List<ExamAnswer> answers = examAnswerRepository.findByExamId(exam.getId());
 

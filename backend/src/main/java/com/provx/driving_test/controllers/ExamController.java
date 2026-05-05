@@ -17,7 +17,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/exams")
@@ -113,6 +112,20 @@ public class ExamController {
 
         ExamResponse data = examService.getLatestCompletedExam(user.getId());
         return ResponseEntity.ok(ApiResponse.success("Latest completed exam retrieved", data));
+    }
+
+    // GET /api/exams/current
+    // Get the current in-progress exam if any
+    @GetMapping("/current")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ResponseEntity<ApiResponse<ExamResponse>> getCurrentExam(
+            @AuthenticationPrincipal User user) {
+
+        ExamResponse data = examService.getCurrentExam(user.getId());
+        if (data == null) {
+            return ResponseEntity.ok(ApiResponse.success("No current exam", null));
+        }
+        return ResponseEntity.ok(ApiResponse.success("Current exam retrieved", data));
     }
 
     // GET /api/exams/dashboard

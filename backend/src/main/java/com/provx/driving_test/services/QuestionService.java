@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,13 +45,15 @@ public class QuestionService {
         // Called by PracticeService and ExamService
         // -------------------------------------------------------
         public List<Question> draw20Random() {
-                List<Question> questions = questionRepository.findRandom20Active();
-                if (questions.size() < 20) {
+                List<Question> allActive = questionRepository.findAllActiveWithOptions();
+                if (allActive.size() < 20) {
                         throw ApiException.badRequest(
-                                        "Not enough active questions in the bank. Found: " + questions.size()
+                                        "Not enough active questions in the bank. Found: " + allActive.size()
                                                         + ", need: 20");
                 }
-                return questions;
+                // Shuffle and take first 20
+                Collections.shuffle(allActive);
+                return allActive.subList(0, 20);
         }
 
         // -------------------------------------------------------

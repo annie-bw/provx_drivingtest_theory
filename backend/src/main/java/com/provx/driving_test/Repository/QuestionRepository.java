@@ -4,6 +4,7 @@ import com.provx.driving_test.models.Question;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -15,7 +16,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     // Core — draw 20 random active questions for a session
     // Optimized: Use TABLESAMPLE for better performance on large datasets
-    @Query(value = "SELECT * FROM questions WHERE is_active = true ORDER BY RANDOM() LIMIT 20",
+    @Query(value = "SELECT * FROM questions WHERE is_active = true TABLESAMPLE BERNOULLI(5) LIMIT 20",
             nativeQuery = true)
     List<Question> findRandom20Active();
 
@@ -25,7 +26,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     // List<Question> findRandom20Active();
 
     // Core — draw 20 random from text-only questions
-    @Query(value = "SELECT * FROM questions WHERE is_active = true AND is_image_based = false ORDER BY RANDOM() LIMIT 20",
+    @Query(value = "SELECT * FROM questions WHERE is_active = true AND is_image_based = false TABLESAMPLE BERNOULLI(5) LIMIT 20",
             nativeQuery = true)
     List<Question> findRandom20TextOnly();
 
@@ -33,6 +34,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     List<Question> findByIsActiveTrue();
 
     // Admin — get active questions with pagination
+    @EntityGraph(attributePaths = "options")
     Page<Question> findByIsActiveTrue(Pageable pageable);
 
     // Admin — get all image-based questions
@@ -50,6 +52,11 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     // Admin — search questions by text
     @Query("SELECT q FROM Question q WHERE LOWER(q.textRw) LIKE LOWER(CONCAT('%', :keyword, '%')) AND q.isActive = true")
     List<Question> searchByKeyword(@Param("keyword") String keyword);
+
+    // Get all active questions with options fetched
+    @Query("SELECT q FROM Question q LEFT JOIN FETCH q.options WHERE q.isActive = true")
+    @Cacheable("activeQuestions")
+    List<Question> findAllActiveWithOptions();
 
     // Check if question number already exists (for import)
     boolean existsByQuestionNumber(Integer questionNumber);

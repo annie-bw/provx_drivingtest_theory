@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import {
   startExam,
   getExam,
+  getCurrentExam,
   saveExamAnswer,
   submitExam as submitExamApi,
 } from "../api/exam";
@@ -44,7 +45,6 @@ export default function ExamPage() {
       setError(null);
 
       try {
-        const savedExamId = sessionStorage.getItem(SESSION_ID_KEY);
         const savedIndex = Number(
           sessionStorage.getItem(SESSION_INDEX_KEY) ?? 0,
         );
@@ -52,20 +52,18 @@ export default function ExamPage() {
           sessionStorage.getItem(SESSION_ANSWERS_KEY) ?? "{}",
         ) as Record<string, string>;
 
-        let currentExam: ExamResponse | null = null;
+        let currentExam: ExamResponse | null = await getCurrentExam(token);
 
-        if (savedExamId) {
-          currentExam = await getExam(savedExamId, token);
-        } else if (!isStarting) {
-          setIsStarting(true);
-          currentExam = await startExam(token);
-          setIsStarting(false);
+        if (!currentExam) {
+          if (!isStarting) {
+            setIsStarting(true);
+            currentExam = await startExam(token);
+            setIsStarting(false);
+          }
         }
 
         if (currentExam) {
-          if (!savedExamId) {
-            sessionStorage.setItem(SESSION_ID_KEY, currentExam.id.toString());
-          }
+          sessionStorage.setItem(SESSION_ID_KEY, currentExam.id.toString());
 
           if (currentExam.status !== "IN_PROGRESS") {
             sessionStorage.removeItem(SESSION_ID_KEY);

@@ -34,6 +34,17 @@ export async function getExam(
   );
 }
 
+export async function getCurrentExam(token: string): Promise<ExamResponse | null> {
+  const response = await apiRequest<{ data: ExamResponse | null }>(
+    "/exams/current",
+    {
+      method: "GET",
+    },
+    token,
+  );
+  return response.data;
+}
+
 export async function saveExamAnswer(
   examId: string,
   request: AnswerRequest,

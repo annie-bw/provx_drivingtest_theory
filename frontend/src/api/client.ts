@@ -5,10 +5,10 @@ interface ApiResponse<T> {
 }
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL ?? "http://localhost:8081/api";
+  import.meta.env.VITE_API_URL ?? "/api";
 
 const BACKEND_BASE_URL =
-  import.meta.env.VITE_BACKEND_URL ?? "http://localhost:8081";
+  import.meta.env.VITE_BACKEND_URL ?? "http://localhost:8080";
 const IMAGE_HOST = import.meta.env.VITE_IMAGE_HOST ?? "";
 
 const buildAssetUrl = (baseUrl: string, relativePath: string) => {
